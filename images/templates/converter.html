@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Converter</title>
+</head>
+<body>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="png_image" accept="image/png">
+            <button type="submit">Upload</button>
+        </form>
+
+        {% if success_message %}
+        <div class="alert alert-success" role="alert">{{ success_message }}</div>
+        {% endif %}
+    </div>
+    <div class="container">
+        <ul id="imageList">
+            {% for key, value in relations.items %}
+                <li class="image">
+                    <h2 style="display: inline-block">{{ value.name }}</h2>
+                    <h3 style="display: inline-block">{{ value.status }}</h3>
+                    <a href="{% url 'download_image' image_id=key %}">
+                        <button>Download</button>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
