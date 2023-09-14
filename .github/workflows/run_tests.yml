@@ -1,0 +1,22 @@
+name: Django CI with pytest
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build backend db
+
+      - name: Run tests
+        run: docker compose exec backend pytest --cov=images
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down backend db
